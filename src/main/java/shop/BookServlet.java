@@ -30,26 +30,37 @@ public class BookServlet extends HttpServlet {
         String action = request.getParameter("action");
         if (action == null) {
             showProductList(request, response);
-        }
-        switch (action) {
-            case "new":
-                showCreateForm(request,response);
-                break;
-            case "create":
-                createProduct(request, response);
-                break;
-            case "edit":
-                showEditForm(request, response);
-                break;
-            case "update":
-                updateProduct(request,response);
-                break;
-            case "delete":
-                deleteProduct(request, response);
-                break;
-            default:
-                showProductList(request, response);
-                break;
+        }else {
+            switch (action) {
+                case "new":
+                    showCreateForm(request,response);
+                    break;
+                case "create":
+                    createProduct(request, response);
+                    break;
+                case "edit":
+                    showEditForm(request, response);
+                    break;
+                case "update":
+                    updateProduct(request,response);
+                    break;
+                case "delete":
+                    deleteProduct(request, response);
+                    break;
+                case "search":
+                    String searchItem = request.getParameter("searchItem");
+                    List<Book> searchResults = searchProduct(searchItem);
+                    request.setAttribute("productList", searchResults);
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("product-list.jsp");
+                    dispatcher.forward(request, response);
+                    break;
+
+
+                default:
+                    showProductList(request, response);
+                    break;
+            }
+
         }
     }
 
@@ -65,6 +76,18 @@ public class BookServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("product-list.jsp");
         dispatcher.forward(request, response);
     }
+
+    private List<Book> searchProduct(String searchItem) {
+        List<Book> searchResults = new ArrayList<>();
+        for (Book product : productList) {
+            if (product.getName().toLowerCase().contains(searchItem.toLowerCase())
+            || product.getAuthor().toLowerCase().contains(searchItem.toLowerCase())) {
+                searchResults.add(product);
+            }
+        }
+        return searchResults;
+    }
+
 
     private void showCreateForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Hiển thị trang tạo sản phẩm
@@ -139,6 +162,7 @@ public class BookServlet extends HttpServlet {
             // Chuyển hướng về trang danh sách sản phẩm
         response.sendRedirect("products");
     }
+
 
     private void deleteProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Lấy ID sản phẩm cần xóa từ request

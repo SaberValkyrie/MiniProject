@@ -146,3 +146,37 @@ table th,
 table td {
     height: 25%;
 }
+form {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Di chuyển form sang góc phải */
+    margin-bottom: 20px;
+}
+
+form input[type="text"] {
+    padding: 13px;
+    border: 4px solid #ccc;
+    border-radius: 56px;
+    width: 500px;
+
+}
+
+form button {
+    color: white;
+    margin-right: 59px;
+    margin-left: -62px;
+}
+
+
+form .search-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+form .search-button img {
+    width: 41px;
+    height: 39px;
+}
+
