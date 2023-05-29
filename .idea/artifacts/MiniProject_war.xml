@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="MiniProject:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>MiniProject</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="MiniProject-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="MiniProject:war exploded" />
+    </root>
+  </artifact>
+</component>

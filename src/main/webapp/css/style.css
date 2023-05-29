@@ -1,0 +1,147 @@
+/* Reset some default styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Main container */
+.container {
+    width: 100%;
+    height: 330px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #1e90ff;
+    color: #ffffff;
+}
+
+/* Home Page title */
+h2 {
+    font-size: 90px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-shadow: 15px 2px 4px rgba( 0, 1, 0.3);
+}
+h1 {
+    /*font-size: 90px;*/
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-shadow:1px 1px 2px rgba( 0, 1, 0.3);
+}
+h4{
+    font-size: 30px;
+    font-weight: bold;
+
+    margin-bottom: 20px;
+    text-shadow:1px 1px 2px rgba( 0, 1, 0.3);
+    color: #343434;
+
+}
+
+/* Welcome message */
+p {
+    font-size: 27px;
+    margin-bottom: 10px;
+    text-shadow: 4px 4px 3px rgba( 4, 1, 29.3);
+}
+
+/* My List Book link */
+a.highlight {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #ff6f00;
+    border-radius: 5px;
+    text-decoration: none;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Additional content section */
+.additional-content {
+    padding: 40px;
+    background-color: #ffffff;
+    color: #1e90ff;
+}
+
+/* Featured Books title */
+.additional-content h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Book list container */
+.book-list-container {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 40px;
+}
+
+/* Book list */
+.book-list {
+    display: flex;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+}
+
+/* Book item */
+.book-item {
+    width: 200px;
+    margin: 10px;
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    background-color: #ffffff;
+}
+
+/* Book image */
+.book-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+/* Book title */
+.book-item h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+/* Book author */
+.book-item p1 {
+    font-size: 14px;
+    color: #666666;
+}
+
+/* Scroll buttons */
+.scroll-left-btn,
+.scroll-right-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #1e90ff;
+    border: none;
+    padding: 5px 10px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.scroll-left-btn {
+    left: 10px;
+}
+
+.scroll-right-btn {
+    right: 10px;
+}
+
+/* Hide horizontal scrollbar */
+.book-list::-webkit-scrollbar {
+    display: none;
+}
