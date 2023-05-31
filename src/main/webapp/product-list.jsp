@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
     <title>My List Book</title>
@@ -14,9 +15,6 @@
     <h2>My List Book</h2>
     <p>This is my list book</p>
     <a href="products?action=new" class="highlight">Add New Book</a>
-
-
-
 </div>
 <br>
 <form method="get" action="products">
@@ -44,9 +42,6 @@
     <tbody>
     <c:choose>
         <c:when test="${empty productList}">
-
-
-
         </c:when>
         <c:otherwise>
             <c:forEach var="product" items="${productList}">

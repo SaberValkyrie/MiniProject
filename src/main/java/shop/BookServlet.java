@@ -4,11 +4,15 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/products")
+@MultipartConfig
 public class BookServlet extends HttpServlet {
     private List<Book> productList;
 
@@ -78,11 +82,13 @@ public class BookServlet extends HttpServlet {
     }
 
     private List<Book> searchProduct(String searchItem) {
+
         List<Book> searchResults = new ArrayList<>();
         for (Book product : productList) {
             if (product.getName().toLowerCase().contains(searchItem.toLowerCase())
             || product.getAuthor().toLowerCase().contains(searchItem.toLowerCase())) {
                 searchResults.add(product);
+//                System.out.println("<h1> đã tìm thấy "+ productList.size() + "kết quả phù hợp</h1>");
             }
         }
         return searchResults;
@@ -103,14 +109,44 @@ public class BookServlet extends HttpServlet {
         String category = request.getParameter("category");
         String desc = request.getParameter("desc");
         int amount = Integer.parseInt(request.getParameter("amount"));
-        String img = request.getParameter("img");
 
-        Book newProduct = new Book(id, name, author,price,category,desc,amount,img);
+        Part filePart = request.getPart("img");
+        String fileName = getFileName(filePart);
+        String uploadDirectory = getServletContext().getRealPath("/img");
+        String imagePath = uploadFile(filePart, fileName, uploadDirectory);
+//        String img = "img/" + fileName;
+        String img =  fileName;
+        Book newProduct = new Book(id, name, author, price, category, desc, amount, img);
         productList.add(newProduct);
 
         response.sendRedirect("products");
-
     }
+
+    private String uploadFile(Part part, String fileName, String uploadDirectory) throws IOException {
+        String filePath = uploadDirectory + File.separator + fileName;
+
+        try (InputStream is = part.getInputStream(); FileOutputStream out = new FileOutputStream(filePath)) {
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            while ((bytesRead = is.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+            }
+        }
+
+        return filePath;
+    }
+
+    private String getFileName(Part part) {
+        String contentDisposition = part.getHeader("content-disposition");
+        String[] elements = contentDisposition.split(";");
+        for (String element : elements) {
+            if (element.trim().startsWith("filename")) {
+                return element.substring(element.indexOf("=") + 1).trim().replace("\"", "");
+            }
+        }
+        return "";
+    }
+
         private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Lấy ID sản phẩm cần chỉnh sửa từ request
         int productId = Integer.parseInt(request.getParameter("id"));
@@ -141,28 +177,47 @@ public class BookServlet extends HttpServlet {
         String category = request.getParameter("category");
         String desc = request.getParameter("desc");
         int amount = Integer.parseInt(request.getParameter("amount"));
-        String img = request.getParameter("img");
 
         // Tìm sản phẩm trong danh sách theo ID
-        Book product = getProductById(productId);
+        Book book = getProductById(productId);
 
-        if (product == null){
+        if (book == null) {
             // Nếu không tìm thấy sản phẩm, chuyển hướng về trang danh sách sản phẩm
             response.sendRedirect("products");
+            return;
         }
-            // Cập nhật thông tin sản phẩm
-            product.setName(name);
-        product.setAuthor(author);
-            product.setPrice(price);
-            product.setCategory(category);
-        product.setDesc(desc);
-            product.setAmount(amount);
-            product.setImg(img);
 
-            // Chuyển hướng về trang danh sách sản phẩm
+        book.setName(name);
+        book.setAuthor(author);
+        book.setPrice(price);
+        book.setCategory(category);
+        book.setDesc(desc);
+        book.setAmount(amount);
+
+        Part part = request.getPart("img");
+        if (part != null && part.getSize() > 0) {
+            deleteimg(book.getImg(), request);
+            String fileName = getFileName(part);
+            String upload = getServletContext().getRealPath("/img");
+            String path = uploadFile(part, fileName, upload);
+//            String img = "img/" + fileName;
+            String img =  fileName;
+
+            book.setImg(img);
+        }
+
+        // Chuyển hướng về trang danh sách sản phẩm
         response.sendRedirect("products");
     }
+private void deleteimg(String img,HttpServletRequest request){
+        String upload = request.getServletContext().getRealPath("") + File.separator + "img";
+        String part = upload + File.separator + img;
 
+        File file = new File(part);
+        if(file.exists()){
+            file.delete();
+        }
+}
 
     private void deleteProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Lấy ID sản phẩm cần xóa từ request

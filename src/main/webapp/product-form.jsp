@@ -11,7 +11,7 @@
 <body style="background-image: url('img/bookshelf.jpg');">
 <c:choose>
     <c:when test="${empty product.id}">
-        <form action="products?action=create" method="post">
+        <form action="products?action=create" method="post" enctype="multipart/form-data">
             <h1>Add New Book:</h1>
             <label for="name">Name:</label>
             <input type="text" placeholder="Enter the name" name="name" id="name"><br><br>
@@ -26,13 +26,13 @@
             <label for="amount">Amount:</label>
             <input type="text" name="amount" placeholder="Amount" id="amount"><br><br>
             <label for="img"> Book image:</label>
-            <input type="file" name="img" id="img"><br><br>
+            <input type="file" name="img" id="img">
             <input type="submit" class="button" value="Create">
             <a href="products" class="button cancel">Cancel</a>
         </form>
     </c:when>
     <c:otherwise>
-        <form action="products?action=update" method="post">
+        <form action="products?action=update" method="post" enctype="multipart/form-data">
 
             <input type="hidden" name="id" value="${product.id}">
             <h1>Edit Book:</h1>
